@@ -16,7 +16,7 @@ void init(rack::Plugin *p) {
 	// For each module, specify the ModuleWidget subclass, manufacturer slug (for saving in patches), manufacturer human-readable name, module slug, and module name
 	p->addModel(modelBPMLFO);
 	p->addModel(modelBPMLFO2);
-	p->addModel(modelBPMLFOPhaseExpander);
+	// p->addModel(modelBPMLFOPhaseExpander);
 	p->addModel(modelDamianLillard);
 	p->addModel(modelEverlastingGlottalStopper);
 	p->addModel(modelHairPick);
@@ -29,20 +29,25 @@ void init(rack::Plugin *p) {
 	//p->addModel(modelProbablyNoteArabic);
 	p->addModel(modelProbablyNoteBP);
 	//p->addModel(modelProbablyNoteIndian);
-	p->addModel(modelPNChordExpander);
+	// p->addModel(modelPNChordExpander);
 	p->addModel(modelQuadAlgorithmicRhythm);
-	p->addModel(modelQARGrooveExpander);
-	p->addModel(modelQARProbabilityExpander);
+	// p->addModel(modelQARGrooveExpander);
+	// p->addModel(modelQARProbabilityExpander);
 	p->addModel(modelQuantussyCell);
 	p->addModel(modelSeedsOfChange);
-	p->addModel(modelSeedsOfChangeCVExpander);
-	p->addModel(modelSeedsOfChangeGateExpander);
+	// p->addModel(modelSeedsOfChangeCVExpander);
+	// p->addModel(modelSeedsOfChangeGateExpander);
 	p->addModel(modelStringTheory);
 	p->addModel(modelRouletteLFO);
 	p->addModel(modelSeriouslySlowLFO);
 	p->addModel(modelVoxInhumana);
-	p->addModel(modelVoxInhumanaExpander);
+	// p->addModel(modelVoxInhumanaExpander);
 	p->addModel(modelCDCSeriouslySlowLFO);
+
+	p->addModel(old::modelLissajousLFO_old);
+	p->addModel(old::modelRouletteLFO_old);
+	p->addModel(old::modelQuadGolombRulerRhythm_old);
+	p->addModel(old::modelQuadEuclideanRhythm_old);
 
 
 	// Any other pluginInstance initialization may go here.

@@ -117,9 +117,12 @@ void QuantussyCell::process(const ProcessArgs &args) {
 	oscillator.setPitch(params[FREQ_PARAM].getValue()  + _value2);
 	oscillator.step(1.0 / args.sampleRate);
 
-	outputs[SIN_OUTPUT].setVoltage(5.0 * oscillator.sin());
-	outputs[TRI_OUTPUT].setVoltage(5.0 * oscillator.tri());
-	outputs[SAW_OUTPUT].setVoltage(5.0 * oscillator.saw());
+	if (outputs[SIN_OUTPUT].active)
+		outputs[SIN_OUTPUT].value = 5.0 * oscillator.sin();
+	if (outputs[TRI_OUTPUT].active)
+		outputs[TRI_OUTPUT].value = 5.0 * oscillator.tri();
+	if (outputs[SAW_OUTPUT].active)
+		outputs[SAW_OUTPUT].value = 5.0 * oscillator.saw();
 
 	float squareOutput = 5.0 * oscillator.sqr(); //Used a lot :)
 	outputs[SQR_OUTPUT].setVoltage(squareOutput);

@@ -51,11 +51,11 @@ struct SeedsOfChange : Module {
 	float outbuffer[NBOUT * 2];
 
 
-	// Expander
-	float consumerMessage[4] = {};// this module must read from here
-	float producerMessage[4] = {};// mother will write into here
-	int seed;
-	float clockValue,resetValue,distributionValue;
+	// // Expander
+	// float consumerMessage[4] = {};// this module must read from here
+	// float producerMessage[4] = {};// mother will write into here
+	// int seed;
+	// float clockValue,resetValue,distributionValue;
 
 
 	dsp::SchmittTrigger resetTrigger,clockTrigger,distributionModeTrigger; 
@@ -74,8 +74,8 @@ struct SeedsOfChange : Module {
 			configParam(SeedsOfChange::GATE_PROBABILITY_1_PARAM + i, 0.0, 1.0, 0.0,"Gate Probability","%",0,100);
 		}
 
-		rightExpander.producerMessage = producerMessage;
-		rightExpander.consumerMessage = consumerMessage;
+		// rightExpander.producerMessage = producerMessage;
+		// rightExpander.consumerMessage = consumerMessage;
 
 	}
 	unsigned long mt[N]; /* the array for the state vector  */
@@ -142,18 +142,18 @@ struct SeedsOfChange : Module {
 			outputs[GATE_1_OUTPUT+i].value = outbuffer[i+NBOUT] ? inputs[CLOCK_INPUT].value : 0;
 		}	
 
-		//Set Expander Info
-		if(rightExpander.module && rightExpander.module->model == modelSeedsOfChangeCVExpander) {	
+		// //Set Expander Info
+		// if(rightExpander.module && rightExpander.module->model == modelSeedsOfChangeCVExpander) {	
 
-			//Send outputs to slaves if present		
-			float *messageToExpander = (float*)(rightExpander.module->leftExpander.producerMessage);
+		// 	//Send outputs to slaves if present		
+		// 	float *messageToExpander = (float*)(rightExpander.module->leftExpander.producerMessage);
 			
-			messageToExpander[0] = latest_seed; 
-			messageToExpander[1] = inputs[CLOCK_INPUT].getVoltage(); 
-			messageToExpander[2] = resetInput; 
-			messageToExpander[3] = gaussianMode; 
-			rightExpander.module->leftExpander.messageFlipRequested = true;						
-		}					
+		// 	messageToExpander[0] = latest_seed; 
+		// 	messageToExpander[1] = inputs[CLOCK_INPUT].getVoltage(); 
+		// 	messageToExpander[2] = resetInput; 
+		// 	messageToExpander[3] = gaussianMode; 
+		// 	rightExpander.module->leftExpander.messageFlipRequested = true;						
+		// }					
 	}
 
 	// For more advanced Module features, see engine/Module.hpp in the Rack API.

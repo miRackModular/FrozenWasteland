@@ -8,25 +8,25 @@
 
 struct BPMLFO : Module {
 	enum ParamIds {
-		MULTIPLIER_PARAM,
-		MULTIPLIER_CV_ATTENUVERTER_PARAM,
 		DIVISION_PARAM,
-		DIVISION_CV_ATTENUVERTER_PARAM,
-		PHASE_PARAM,
-		PHASE_CV_ATTENUVERTER_PARAM,
-		QUANTIZE_PHASE_PARAM,
 		OFFSET_PARAM,	
 		HOLD_CLOCK_BEHAVIOR_PARAM,
 		HOLD_MODE_PARAM,
+		DIVISION_CV_ATTENUVERTER_PARAM,
+		MULTIPLIER_PARAM,
+		MULTIPLIER_CV_ATTENUVERTER_PARAM,
+		PHASE_PARAM,
+		PHASE_CV_ATTENUVERTER_PARAM,
+		QUANTIZE_PHASE_PARAM,
 		NUM_PARAMS
 	};
 	enum InputIds {
 		CLOCK_INPUT,
-		MULTIPLIER_INPUT,
 		DIVISION_INPUT,
-		PHASE_INPUT,
 		RESET_INPUT,
 		HOLD_INPUT,
+		MULTIPLIER_INPUT,
+		PHASE_INPUT,
 		NUM_INPUTS
 	};
 	enum OutputIds {
@@ -121,9 +121,9 @@ struct BPMLFO : Module {
 		}
 	};
 
-	// Expander
-	float consumerMessage[PASSTHROUGH_RIGHT_VARIABLE_COUNT] = {};// this module must read from here
-	float producerMessage[PASSTHROUGH_RIGHT_VARIABLE_COUNT] = {};// mother will write into here
+	// // Expander
+	// float consumerMessage[PASSTHROUGH_RIGHT_VARIABLE_COUNT] = {};// this module must read from here
+	// float producerMessage[PASSTHROUGH_RIGHT_VARIABLE_COUNT] = {};// mother will write into here
 
 
 	LowFrequencyOscillator oscillator;
@@ -138,11 +138,6 @@ struct BPMLFO : Module {
 	bool firstClockReceived = false;
 	bool secondClockReceived = false;
 	bool phase_quantized = false;
-
-	float sinOutputValue = 0.0;
-	float triOutputValue = 0.0;
-	float sawOutputValue = 0.0;
-	float sqrOutputValue = 0.0;
 
 	
 
@@ -160,8 +155,8 @@ struct BPMLFO : Module {
 		configParam(HOLD_CLOCK_BEHAVIOR_PARAM, 0.0, 1.0, 1.0);
 		configParam(HOLD_MODE_PARAM, 0.0, 1.0, 1.0);
 
-		leftExpander.producerMessage = producerMessage;
-		leftExpander.consumerMessage = consumerMessage;
+		// leftExpander.producerMessage = producerMessage;
+		// leftExpander.consumerMessage = consumerMessage;
 	}
 
 	void process(const ProcessArgs &args) override {
@@ -247,35 +242,34 @@ struct BPMLFO : Module {
 		}
 
 		if(!holding) {
-			sinOutputValue = 5.0 * oscillator.sin();
-			triOutputValue = 5.0 * oscillator.tri();
-			sawOutputValue = 5.0 * oscillator.saw();
-			sqrOutputValue = 5.0 * oscillator.sqr();
+			if (outputs[SIN_OUTPUT].active)
+				outputs[SIN_OUTPUT].value = 5.0 * oscillator.sin();
+			if (outputs[TRI_OUTPUT].active)
+				outputs[TRI_OUTPUT].value = 5.0 * oscillator.tri();
+			if (outputs[SAW_OUTPUT].active)
+				outputs[SAW_OUTPUT].value = 5.0 * oscillator.saw();
+			if (outputs[SQR_OUTPUT].active)
+				outputs[SQR_OUTPUT].value = 5.0 * oscillator.sqr();
 		}
 
 
-		outputs[SIN_OUTPUT].setVoltage(sinOutputValue);
-		outputs[TRI_OUTPUT].setVoltage(triOutputValue);
-		outputs[SAW_OUTPUT].setVoltage(sawOutputValue);
-		outputs[SQR_OUTPUT].setVoltage( sqrOutputValue);
-
-		bool rightExpanderPresent = (rightExpander.module && (rightExpander.module->model == modelBPMLFOPhaseExpander));
-		if(rightExpanderPresent) {
-			float *messageToSlave = (float*)(rightExpander.module->leftExpander.producerMessage);	
-			messageToSlave[0] = inputs[CLOCK_INPUT].isConnected(); 	
-			messageToSlave[1] = inputs[CLOCK_INPUT].getVoltage();
-			messageToSlave[2] = inputs[RESET_INPUT].getVoltage();
-			messageToSlave[3] = inputs[HOLD_INPUT].getVoltage();
-			messageToSlave[4] = multiplier;
-			messageToSlave[5] = division;
-			messageToSlave[6] = initialPhase;
-			messageToSlave[7] = params[OFFSET_PARAM].getValue();
-			messageToSlave[8] = params[HOLD_MODE_PARAM].getValue();
-			messageToSlave[9] = params[HOLD_CLOCK_BEHAVIOR_PARAM].getValue();
-			messageToSlave[10] = 0.0f	;
-			messageToSlave[11] = 1.0f;
-			messageToSlave[12] = 0.5f;
-		}
+		// bool rightExpanderPresent = (rightExpander.module && (rightExpander.module->model == modelBPMLFOPhaseExpander));
+		// if(rightExpanderPresent) {
+		// 	float *messageToSlave = (float*)(rightExpander.module->leftExpander.producerMessage);	
+		// 	messageToSlave[0] = inputs[CLOCK_INPUT].isConnected(); 	
+		// 	messageToSlave[1] = inputs[CLOCK_INPUT].getVoltage();
+		// 	messageToSlave[2] = inputs[RESET_INPUT].getVoltage();
+		// 	messageToSlave[3] = inputs[HOLD_INPUT].getVoltage();
+		// 	messageToSlave[4] = multiplier;
+		// 	messageToSlave[5] = division;
+		// 	messageToSlave[6] = initialPhase;
+		// 	messageToSlave[7] = params[OFFSET_PARAM].getValue();
+		// 	messageToSlave[8] = params[HOLD_MODE_PARAM].getValue();
+		// 	messageToSlave[9] = params[HOLD_CLOCK_BEHAVIOR_PARAM].getValue();
+		// 	messageToSlave[10] = 0.0f	;
+		// 	messageToSlave[11] = 1.0f;
+		// 	messageToSlave[12] = 0.5f;
+		// }
 			
 	}
 

@@ -76,9 +76,9 @@ struct ProbablyNote : Module {
 		NUM_LIGHTS = NOTE_ACTIVE_LIGHT + MAX_NOTES*2
 	};
 
-	// Expander
-	float consumerMessage[12] = {};// this module must read from here
-	float producerMessage[12] = {};// mother will write into here
+	// // Expander
+	// float consumerMessage[12] = {};// this module must read from here
+	// float producerMessage[12] = {};// mother will write into here
 
 
 
@@ -210,8 +210,8 @@ struct ProbablyNote : Module {
             configParam(ProbablyNote::NOTE_WEIGHT_PARAM + i, 0.0, 1.0, 0.0,"Note Weight");		
         }
 
-		rightExpander.producerMessage = producerMessage;
-		rightExpander.consumerMessage = consumerMessage;
+		// rightExpander.producerMessage = producerMessage;
+		// rightExpander.consumerMessage = consumerMessage;
 
 		onReset();
 	}
@@ -376,30 +376,30 @@ struct ProbablyNote : Module {
 
 	void process(const ProcessArgs &args) override {
 
-		//Get Expander Info
-		if(rightExpander.module && rightExpander.module->model == modelPNChordExpander) {	
-			generateChords = true;		
-			float *messagesFromExpander = (float*)rightExpander.consumerMessage;
-			dissonance5Prbability = messagesFromExpander[0];
-			dissonance7Prbability = messagesFromExpander[1];
-			suspensionProbability = messagesFromExpander[2];
-			externalDissonance5Random = messagesFromExpander[4];
-			externalDissonance7Random = messagesFromExpander[5];
-			externalSuspensionRandom = messagesFromExpander[6];
+		// //Get Expander Info
+		// if(rightExpander.module && rightExpander.module->model == modelPNChordExpander) {	
+		// 	generateChords = true;		
+		// 	float *messagesFromExpander = (float*)rightExpander.consumerMessage;
+		// 	dissonance5Prbability = messagesFromExpander[0];
+		// 	dissonance7Prbability = messagesFromExpander[1];
+		// 	suspensionProbability = messagesFromExpander[2];
+		// 	externalDissonance5Random = messagesFromExpander[4];
+		// 	externalDissonance7Random = messagesFromExpander[5];
+		// 	externalSuspensionRandom = messagesFromExpander[6];
 
-			//Send outputs to slaves if present		
-			float *messageToExpander = (float*)(rightExpander.module->leftExpander.producerMessage);
+		// 	//Send outputs to slaves if present		
+		// 	float *messageToExpander = (float*)(rightExpander.module->leftExpander.producerMessage);
 			
-			messageToExpander[0] = thirdOffset; 
-			messageToExpander[1] = fifthOffset; 
-			messageToExpander[2] = seventhOffset; 
-			rightExpander.module->leftExpander.messageFlipRequested = true;
+		// 	messageToExpander[0] = thirdOffset; 
+		// 	messageToExpander[1] = fifthOffset; 
+		// 	messageToExpander[2] = seventhOffset; 
+		// 	rightExpander.module->leftExpander.messageFlipRequested = true;
 
 							
 
-		} else {
-			generateChords = false;
-		}
+		// } else {
+		// 	generateChords = false;
+		// }
 
 	
         if (resetScaleTrigger.process(params[RESET_SCALE_PARAM].getValue())) {
@@ -1485,7 +1485,7 @@ struct ProbablyNoteWidget : ModuleWidget {
 	struct PNLayoutItem : MenuItem {
 		ProbablyNote *module;
 		bool layout;
-		void onAction(const event::Action &e) override {
+		void onAction(event::Action &e) override {
 			module->useCircleLayout = layout;
 		}
 		void step() override {

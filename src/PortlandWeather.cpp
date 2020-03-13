@@ -285,14 +285,14 @@ struct PortlandWeather : Module {
 	        filterParams[i].setFreq(T(800.0f / sampleRate));
 			delayTime[i] = 0.0f;
 
-			src[i] = src_new(SRC_SINC_FASTEST, 2, NULL);
+			src[i] = src_new(SRC_LINEAR, 2, NULL);
 
 			for(int j=0;j<MAX_GRAINS;j++) {
 	    	 	granularPitchShift[i][j].Init((float*) pitchShiftBuffer[i][j],((float)j)/MAX_GRAINS);
 			}
 	    }	
 		for(int i=0;i<CHANNELS;i++) {
-			src[NUM_TAPS+i] = src_new(SRC_SINC_FASTEST, 2, NULL);
+			src[NUM_TAPS+i] = src_new(SRC_LINEAR, 2, NULL);
 
 			for(int j=0;j<MAX_GRAINS;j++) {
 				granularPitchShift[i+NUM_TAPS][j].Init((float*) pitchShiftBuffer[i+NUM_TAPS][j],((float)j)/MAX_GRAINS);
@@ -300,6 +300,11 @@ struct PortlandWeather : Module {
 		}
 	}
 
+	~PortlandWeather() {
+		for(int i=0;i<NUM_TAPS;i++) {
+			src_delete(src[i]);
+		}
+	}
 
 
 	json_t *dataToJson() override {
@@ -1083,8 +1088,8 @@ struct PortlandWeatherWidget : ModuleWidget {
 
 		addParam( createParam<CKSS>(Vec(290, 114), module, PortlandWeather::REVERSE_TRIGGER_MODE_PARAM));
 		addParam( createParam<CKSS>(Vec(353, 114), module, PortlandWeather::PING_PONG_TRIGGER_MODE_PARAM));
-		addParam( createParam<HCKSS>(Vec(437 + 14, 37), module, PortlandWeather::STACK_TRIGGER_MODE_PARAM));
-		addParam( createParam<HCKSS>(Vec(437 + 14, 77), module, PortlandWeather::MUTE_TRIGGER_MODE_PARAM));
+		addParam( createParam<CKSSH>(Vec(437 + 14, 37), module, PortlandWeather::STACK_TRIGGER_MODE_PARAM));
+		addParam( createParam<CKSSH>(Vec(437 + 14, 77), module, PortlandWeather::MUTE_TRIGGER_MODE_PARAM));
 
 		
 
@@ -1135,7 +1140,7 @@ struct PortlandWeatherWidget : ModuleWidget {
 	struct GrainCountItem : MenuItem {
 		PortlandWeather *module;
 		int grainCount;
-		void onAction(const event::Action &e) override {
+		void onAction(event::Action &e) override {
 			module->grainCount = grainCount;
 		}
 		void step() override {
@@ -1146,7 +1151,7 @@ struct PortlandWeatherWidget : ModuleWidget {
 	struct GrainSizeItem : MenuItem {
 		PortlandWeather *module;
 		float grainSize;
-		void onAction(const event::Action &e) override {
+		void onAction(event::Action &e) override {
 			module->grainSize = grainSize;
 		}
 		void step() override {

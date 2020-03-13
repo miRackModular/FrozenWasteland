@@ -157,7 +157,7 @@ struct HairPick : Module {
 		configParam(FEEDBACK_TYPE_PARAM, 0.0f, 3, 0.0f);
 		configParam(FEEDBACK_AMOUNT_PARAM, 0.0f, 1.0f, 0.0f);
 		for(int i=0;i<=NUM_TAPS; i++) {
-			src[i] = src_new(SRC_SINC_FASTEST, 2, NULL);	
+			src[i] = src_new(SRC_LINEAR, 2, NULL);	
 		}
 
 		srand(time(NULL));
@@ -165,6 +165,11 @@ struct HairPick : Module {
 		//src = src_new(SRC_ZERO_ORDER_HOLD, 1, NULL);
 	}
 
+	~HairPick() {
+		for(int i=0;i<NUM_TAPS;i++) {
+			src_delete(src[i]);
+		}
+	}
 	
 
 

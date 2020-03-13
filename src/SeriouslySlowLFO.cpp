@@ -21,8 +21,8 @@ struct SeriouslySlowLFO : Module {
 	};
 	enum InputIds {
 		FM_INPUT,
-		PHASE_INPUT,
 		RESET_INPUT,
+		PHASE_INPUT,
 		NUM_INPUTS
 	};
 	enum OutputIds {

@@ -55,7 +55,7 @@
 			"tags": ["VCF"]
 		},
 		{
-			"slug": "LissajousLFO",
+			"slug": "LissajousLFO2",
 			"name":  "Lissajous LFO",
 			"description": "LFO based on interactions of 4 sine waves",
 			"tags": ["LFO"]
@@ -121,7 +121,7 @@
 			"tags": ["Logic"]
 		},
 		{
-			"slug": "RouletteLFO",
+			"slug": "RouletteLFO2",
 			"name": "Roulette LFO",
 			"description": "LFO Based on based on rolling curves",
 			"tags": ["LFO"]

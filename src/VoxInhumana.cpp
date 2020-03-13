@@ -213,19 +213,19 @@ struct VoxInhumana : Module {
 		lights[VOWEL_1_LIGHT].value = 1.0-vowelBalance;
 		lights[VOWEL_2_LIGHT].value = vowelBalance;
 
-		//Get Expander Info
-		if(rightExpander.module && rightExpander.module->model == modelVoxInhumanaExpander) {			
-			float *message = (float*) rightExpander.module->leftExpander.consumerMessage;
-			for(int i = 0; i < BANDS; i++) {
-				expanderQ[i] = message[i * 2];
-				twelveDbSlope[i] = message[i * 2 + 1];					
-			}			
-		} else {
-			for(int i = 0; i < BANDS; i++) {
-				expanderQ[i] = 0;
-				twelveDbSlope[i] =false;					
-			}			
-		}
+		// //Get Expander Info
+		// if(rightExpander.module && rightExpander.module->model == modelVoxInhumanaExpander) {			
+		// 	float *message = (float*) rightExpander.module->leftExpander.consumerMessage;
+		// 	for(int i = 0; i < BANDS; i++) {
+		// 		expanderQ[i] = message[i * 2];
+		// 		twelveDbSlope[i] = message[i * 2 + 1];					
+		// 	}			
+		// } else {
+		// 	for(int i = 0; i < BANDS; i++) {
+		// 		expanderQ[i] = 0;
+		// 		twelveDbSlope[i] =false;					
+		// 	}			
+		// }
 		
 		for (int i=0; i<BANDS;i++) {
 			float cutoffExp = params[FREQ_1_CUTOFF_PARAM+i].getValue() + inputs[FREQ_1_CUTOFF_INPUT+i].getVoltage() * params[FREQ_1_CV_ATTENUVERTER_PARAM+i].getValue(); 

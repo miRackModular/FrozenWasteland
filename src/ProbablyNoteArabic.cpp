@@ -468,7 +468,7 @@ struct ProbablyNoteArabic : Module {
 				outputs[QUANT_OUTPUT].setVoltage(quantitizedNoteCV);
 				outputs[WEIGHT_OUTPUT].setVoltage(clamp((params[NOTE_WEIGHT_PARAM+randomNote].getValue() + (inputs[NOTE_WEIGHT_INPUT+randomNote].getVoltage() / 10.0f) * 10.0f),0.0f,10.0f));
 				if(lastQuantizedCV != quantitizedNoteCV) {
-					noteChangePulse.trigger(1e-3);	
+					noteChangePulse.trigger();	
 					lastQuantizedCV = quantitizedNoteCV;
 				}        
 			}

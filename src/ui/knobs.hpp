@@ -95,9 +95,9 @@ struct RoundHugeFWSnapKnob : RoundKnob {
 ////////////////////
 
 
-struct HCKSS : SvgSwitch {
-	HCKSS() {
-		addFrame(APP->window->loadSvg(asset::plugin(pluginInstance,"res/ComponentLibrary/HCKSS_0.svg")));
-		addFrame(APP->window->loadSvg(asset::plugin(pluginInstance,"res/ComponentLibrary/HCKSS_1.svg")));
-	}
-};
+// struct HCKSS : SvgSwitch {
+// 	HCKSS() {
+// 		addFrame(APP->window->loadSvg(asset::plugin(pluginInstance,"res/ComponentLibrary/HCKSS_0.svg")));
+// 		addFrame(APP->window->loadSvg(asset::plugin(pluginInstance,"res/ComponentLibrary/HCKSS_1.svg")));
+// 	}
+// };

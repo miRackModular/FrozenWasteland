@@ -10,32 +10,32 @@
 
 struct BPMLFO2 : Module {
 	enum ParamIds {
-		MULTIPLIER_PARAM,
-		MULTIPLIER_CV_ATTENUVERTER_PARAM,
 		DIVISION_PARAM,
 		DIVISION_CV_ATTENUVERTER_PARAM,
-		WAVESLOPE_PARAM,
-		WAVESLOPE_CV_ATTENUVERTER_PARAM,
 		SKEW_PARAM,
 		SKEW_CV_ATTENUVERTER_PARAM,
-		PHASE_PARAM,
-		PHASE_CV_ATTENUVERTER_PARAM,
-		QUANTIZE_PHASE_PARAM,
 		OFFSET_PARAM,	
 		WAVESHAPE_PARAM,
 		HOLD_CLOCK_BEHAVIOR_PARAM,
 		HOLD_MODE_PARAM,
+		MULTIPLIER_PARAM,
+		MULTIPLIER_CV_ATTENUVERTER_PARAM,
+		WAVESLOPE_PARAM,
+		WAVESLOPE_CV_ATTENUVERTER_PARAM,
+		PHASE_PARAM,
+		PHASE_CV_ATTENUVERTER_PARAM,
+		QUANTIZE_PHASE_PARAM,
 		NUM_PARAMS
 	};
 	enum InputIds {
 		CLOCK_INPUT,
-		MULTIPLIER_INPUT,
 		DIVISION_INPUT,
-		WAVESLOPE_INPUT,
 		SKEW_INPUT,
-		PHASE_INPUT,
 		RESET_INPUT,
 		HOLD_INPUT,
+		MULTIPLIER_INPUT,
+		WAVESLOPE_INPUT,
+		PHASE_INPUT,
 		NUM_INPUTS
 	};
 	enum OutputIds {
@@ -161,9 +161,9 @@ struct BPMLFO2 : Module {
 		}
 	};
 
-	// Expander
-	float consumerMessage[PASSTHROUGH_RIGHT_VARIABLE_COUNT] = {};// this module must read from here
-	float producerMessage[PASSTHROUGH_RIGHT_VARIABLE_COUNT] = {};// mother will write into here
+	// // Expander
+	// float consumerMessage[PASSTHROUGH_RIGHT_VARIABLE_COUNT] = {};// this module must read from here
+	// float producerMessage[PASSTHROUGH_RIGHT_VARIABLE_COUNT] = {};// mother will write into here
 
 
 
@@ -213,8 +213,8 @@ struct BPMLFO2 : Module {
 		configParam(HOLD_CLOCK_BEHAVIOR_PARAM, 0.0, 1.0, 1.0);
 		configParam(HOLD_MODE_PARAM, 0.0, 1.0, 1.0);
 
-		leftExpander.producerMessage = producerMessage;
-		leftExpander.consumerMessage = consumerMessage;
+		// leftExpander.producerMessage = producerMessage;
+		// leftExpander.consumerMessage = consumerMessage;
 	}
 	void process(const ProcessArgs &args) override;
 
@@ -365,23 +365,23 @@ void BPMLFO2::process(const ProcessArgs &args) {
 	outputs[LFO_90_OUTPUT].setVoltage(lfo90OutputValue);
 	outputs[LFO_180_OUTPUT].setVoltage(lfo180OutputValue);
 
-	bool rightExpanderPresent = (rightExpander.module && (rightExpander.module->model == modelBPMLFOPhaseExpander));
-	if(rightExpanderPresent) {
-		float *messageToSlave = (float*)(rightExpander.module->leftExpander.producerMessage);	
-		messageToSlave[0] = inputs[CLOCK_INPUT].isConnected(); 	
-		messageToSlave[1] = inputs[CLOCK_INPUT].getVoltage();
-		messageToSlave[2] = inputs[RESET_INPUT].getVoltage();
-		messageToSlave[3] = inputs[HOLD_INPUT].getVoltage();
-		messageToSlave[4] = multiplier;
-		messageToSlave[5] = division;
-		messageToSlave[6] = initialPhase;
-		messageToSlave[7] = params[OFFSET_PARAM].getValue();
-		messageToSlave[8] = params[HOLD_MODE_PARAM].getValue();
-		messageToSlave[9] = params[HOLD_CLOCK_BEHAVIOR_PARAM].getValue();
-		messageToSlave[10] = waveshape;
-		messageToSlave[11] = waveSlope;
-		messageToSlave[12] = skew;
-	}
+	// bool rightExpanderPresent = (rightExpander.module && (rightExpander.module->model == modelBPMLFOPhaseExpander));
+	// if(rightExpanderPresent) {
+	// 	float *messageToSlave = (float*)(rightExpander.module->leftExpander.producerMessage);	
+	// 	messageToSlave[0] = inputs[CLOCK_INPUT].isConnected(); 	
+	// 	messageToSlave[1] = inputs[CLOCK_INPUT].getVoltage();
+	// 	messageToSlave[2] = inputs[RESET_INPUT].getVoltage();
+	// 	messageToSlave[3] = inputs[HOLD_INPUT].getVoltage();
+	// 	messageToSlave[4] = multiplier;
+	// 	messageToSlave[5] = division;
+	// 	messageToSlave[6] = initialPhase;
+	// 	messageToSlave[7] = params[OFFSET_PARAM].getValue();
+	// 	messageToSlave[8] = params[HOLD_MODE_PARAM].getValue();
+	// 	messageToSlave[9] = params[HOLD_CLOCK_BEHAVIOR_PARAM].getValue();
+	// 	messageToSlave[10] = waveshape;
+	// 	messageToSlave[11] = waveSlope;
+	// 	messageToSlave[12] = skew;
+	// }
 
 }
 

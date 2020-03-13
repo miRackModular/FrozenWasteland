@@ -100,7 +100,7 @@ struct HyperMeasures : Module {
 			float rhythmLength = numerator[i]/denominator[i] * duration;
 			elapsedTime[i] += 1.0/args.sampleRate;
 			if(elapsedTime[i] >= rhythmLength && rhythmLength > 0) {
-				rhythmPulse[i].trigger(1e-3);				
+				rhythmPulse[i].trigger();				
 				elapsedTime[i] = 0.0;
 			}
 			outputs[RHYTHM_1_OUTPUT + i].setVoltage(rhythmPulse[i].process(1.0 / args.sampleRate) ? 10.0 : 0);	

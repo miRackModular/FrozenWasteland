@@ -129,7 +129,7 @@ struct StringTheory : Module {
 
 
 		for(int i=0;i<MAX_GRAINS;i++) {
-			src[i] = src_new(SRC_SINC_FASTEST, 1, NULL);
+			src[i] = src_new(SRC_LINEAR, 1, NULL);
 			assert(src[i]);
 		}
 		//src = src_new(SRC_LINEAR, 1, NULL);
@@ -301,6 +301,8 @@ struct StringTheory : Module {
 				srcData.output_frames = outBuffer[i].capacity();
 				srcData.end_of_input = false;
 				srcData.src_ratio = ratio;
+				srcData.input_frames_used = 0;
+				srcData.output_frames_gen = 0;
 				src_process(src[i], &srcData);
 				historyBuffer[i].startIncr(srcData.input_frames_used);
 				outBuffer[i].endIncr(srcData.output_frames_gen);

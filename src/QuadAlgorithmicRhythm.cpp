@@ -141,9 +141,9 @@ struct QuadAlgorithmicRhythm : Module {
 		NOT_TRIGGERED_PGTS
 	};
 
-	// Expander
-	float consumerMessage[PASSTHROUGH_OFFSET + PASSTHROUGH_LEFT_VARIABLE_COUNT + PASSTHROUGH_RIGHT_VARIABLE_COUNT] = {};// this module must read from here
-	float producerMessage[PASSTHROUGH_OFFSET + PASSTHROUGH_LEFT_VARIABLE_COUNT + PASSTHROUGH_RIGHT_VARIABLE_COUNT] = {};// mother will write into here
+	// // Expander
+	// float consumerMessage[PASSTHROUGH_OFFSET + PASSTHROUGH_LEFT_VARIABLE_COUNT + PASSTHROUGH_RIGHT_VARIABLE_COUNT] = {};// this module must read from here
+	// float producerMessage[PASSTHROUGH_OFFSET + PASSTHROUGH_LEFT_VARIABLE_COUNT + PASSTHROUGH_RIGHT_VARIABLE_COUNT] = {};// mother will write into here
 	
     int algorithnMatrix[TRACK_COUNT];
 	bool beatMatrix[TRACK_COUNT][MAX_STEPS];
@@ -174,19 +174,17 @@ struct QuadAlgorithmicRhythm : Module {
 
 
 
-	float expanderOutputValue[TRACK_COUNT];
-	float expanderAccentValue[TRACK_COUNT];
-	float expanderEocValue[TRACK_COUNT];
-	float lastExpanderEocValue[TRACK_COUNT];
+	// float expanderOutputValue[TRACK_COUNT];
+	// float expanderAccentValue[TRACK_COUNT];
+	// float expanderEocValue[TRACK_COUNT];
+	// float lastExpanderEocValue[TRACK_COUNT];
 	
-	float expanderClockValue = 0;
-	float expanderResetValue = 0;
-	float expanderMuteValue = 0;
+	// float expanderClockValue = 0;
+	// float expanderResetValue = 0;
+	// float expanderMuteValue = 0;
 
 	double maxStepCount;
 	double masterStepCount;
-	bool slaveQARsPresent;
-	bool masterQARPresent;
 
 	const char* trackNames[TRACK_COUNT] {"1","2","3","4"};
 
@@ -264,8 +262,8 @@ struct QuadAlgorithmicRhythm : Module {
 		configParam(RESET_PARAM, 0.0, 1.0, 0.0);
 		configParam(MUTE_PARAM, 0.0, 1.0, 0.0);
 
-		leftExpander.producerMessage = producerMessage;
-		leftExpander.consumerMessage = consumerMessage;
+		// leftExpander.producerMessage = producerMessage;
+		// leftExpander.consumerMessage = consumerMessage;
 		
 		srand(time(NULL));
 		
@@ -286,10 +284,10 @@ struct QuadAlgorithmicRhythm : Module {
 
 
 
-			expanderOutputValue[i] = 0.0;
-			expanderAccentValue[i] = 0.0;
-			expanderEocValue[i] = 0.0;
-			lastExpanderEocValue[i] = 0.0;
+			// expanderOutputValue[i] = 0.0;
+			// expanderAccentValue[i] = 0.0;
+			// expanderEocValue[i] = 0.0;
+			// lastExpanderEocValue[i] = 0.0;
 
 			running[i] = true;
 			for(int j = 0; j < MAX_STEPS; j++) {
@@ -307,66 +305,65 @@ struct QuadAlgorithmicRhythm : Module {
 
 		int beatLocation[MAX_STEPS];
 
-		//Initialize
-		for(int i = 0; i < TRACK_COUNT; i++) {
-			expanderOutputValue[i] = 0; 
-			expanderAccentValue[i] = 0; 
-			lastExpanderEocValue[i] = 0;
-		}
-		//See if a slave is passing through an expander
-		bool slavedQARPresent = false;
-		bool rightExpanderPresent = (rightExpander.module 
-		&& (rightExpander.module->model == modelQuadAlgorithmicRhythm || rightExpander.module->model == modelQARProbabilityExpander || rightExpander.module->model == modelQARGrooveExpander));
-		if(rightExpanderPresent)
-		{			
-			float *message = (float*) rightExpander.module->leftExpander.consumerMessage;
-			slavedQARPresent = message[PASSTHROUGH_OFFSET];  // Slave QAR Exists flag
+		// //Initialize
+		// for(int i = 0; i < TRACK_COUNT; i++) {
+		// 	expanderOutputValue[i] = 0; 
+		// 	expanderAccentValue[i] = 0; 
+		// 	lastExpanderEocValue[i] = 0;
+		// }
+		// //See if a slave is passing through an expander
+		// bool slavedQARPresent = false;
+		// bool rightExpanderPresent = (rightExpander.module 
+		// && (rightExpander.module->model == modelQuadAlgorithmicRhythm || rightExpander.module->model == modelQARProbabilityExpander || rightExpander.module->model == modelQARGrooveExpander));
+		// if(rightExpanderPresent)
+		// {			
+		// 	float *message = (float*) rightExpander.module->leftExpander.consumerMessage;
+		// 	slavedQARPresent = message[PASSTHROUGH_OFFSET];  // Slave QAR Exists flag
 
-			if(slavedQARPresent) {			
-				for(int i = 0; i < TRACK_COUNT; i++) {
-					expanderOutputValue[i] = message[PASSTHROUGH_OFFSET + 1 + i * 3] ; 
-					expanderAccentValue[i] = message[PASSTHROUGH_OFFSET + 1 + i * 3 + 1] ; 
-					lastExpanderEocValue[i] = message[PASSTHROUGH_OFFSET + 1 + i * 3 + 2] ; 					
-				}
-			}
-		}
+		// 	if(slavedQARPresent) {			
+		// 		for(int i = 0; i < TRACK_COUNT; i++) {
+		// 			expanderOutputValue[i] = message[PASSTHROUGH_OFFSET + 1 + i * 3] ; 
+		// 			expanderAccentValue[i] = message[PASSTHROUGH_OFFSET + 1 + i * 3 + 1] ; 
+		// 			lastExpanderEocValue[i] = message[PASSTHROUGH_OFFSET + 1 + i * 3 + 2] ; 					
+		// 		}
+		// 	}
+		// }
 	
 		
-		// Initialize
-		for(int i = 0; i < TRACK_COUNT; i++) {				
-			expanderEocValue[i] = 0; 
-		}
-		expanderClockValue = 0; 
-		expanderResetValue = 0; 
-		expanderMuteValue = 0; 
+		// // Initialize
+		// for(int i = 0; i < TRACK_COUNT; i++) {				
+		// 	expanderEocValue[i] = 0; 
+		// }
+		// expanderClockValue = 0; 
+		// expanderResetValue = 0; 
+		// expanderMuteValue = 0; 
 
-		//See if a master is passing through an expander
-		bool masterQARPresent = false;
-		bool leftExpanderPresent = (leftExpander.module && (leftExpander.module->model == modelQuadAlgorithmicRhythm
-		 || leftExpander.module->model == modelQARProbabilityExpander || leftExpander.module->model == modelQARGrooveExpander));
-		if(leftExpanderPresent)
-		{			
-			float *consumerMessage = (float*)leftExpander.consumerMessage;
-			masterQARPresent = consumerMessage[PASSTHROUGH_OFFSET + PASSTHROUGH_LEFT_VARIABLE_COUNT]; 
+		// //See if a master is passing through an expander
+		// bool masterQARPresent = false;
+		// bool leftExpanderPresent = (leftExpander.module && (leftExpander.module->model == modelQuadAlgorithmicRhythm
+		//  || leftExpander.module->model == modelQARProbabilityExpander || leftExpander.module->model == modelQARGrooveExpander));
+		// if(leftExpanderPresent)
+		// {			
+		// 	float *consumerMessage = (float*)leftExpander.consumerMessage;
+		// 	masterQARPresent = consumerMessage[PASSTHROUGH_OFFSET + PASSTHROUGH_LEFT_VARIABLE_COUNT]; 
 
-			if(masterQARPresent) {
+		// 	if(masterQARPresent) {
 			
-				expanderClockValue = consumerMessage[PASSTHROUGH_OFFSET + PASSTHROUGH_LEFT_VARIABLE_COUNT + 1] ; 
-				expanderResetValue = consumerMessage[PASSTHROUGH_OFFSET + PASSTHROUGH_LEFT_VARIABLE_COUNT + 2] ; 
-				expanderMuteValue = consumerMessage[PASSTHROUGH_OFFSET + PASSTHROUGH_LEFT_VARIABLE_COUNT + 3] ; 
+		// 		expanderClockValue = consumerMessage[PASSTHROUGH_OFFSET + PASSTHROUGH_LEFT_VARIABLE_COUNT + 1] ; 
+		// 		expanderResetValue = consumerMessage[PASSTHROUGH_OFFSET + PASSTHROUGH_LEFT_VARIABLE_COUNT + 2] ; 
+		// 		expanderMuteValue = consumerMessage[PASSTHROUGH_OFFSET + PASSTHROUGH_LEFT_VARIABLE_COUNT + 3] ; 
 
-				for(int i = 0; i < TRACK_COUNT; i++) {				
-					expanderEocValue[i] = consumerMessage[PASSTHROUGH_OFFSET + PASSTHROUGH_LEFT_VARIABLE_COUNT + 4 + i] ; 
-				}
-			}
-		}
+		// 		for(int i = 0; i < TRACK_COUNT; i++) {				
+		// 			expanderEocValue[i] = consumerMessage[PASSTHROUGH_OFFSET + PASSTHROUGH_LEFT_VARIABLE_COUNT + 4 + i] ; 
+		// 		}
+		// 	}
+		// }
 
 		//if(slavedQARPresent)
 		//lights[IS_MASTER_LIGHT].value = slavedQARPresent;
 
 		//if(masterQARPresent)
 		//lights[IS_SLAVE_LIGHT].value = masterQARPresent;
-
 
 
 		
@@ -385,8 +382,8 @@ struct QuadAlgorithmicRhythm : Module {
 				beatIndex[trackNumber] = -1;
                 lastStepTime[trackNumber] = 0;
                 lastSwingDuration[trackNumber] = 0; // Not sure about this
-				expanderEocValue[trackNumber] = 0; 
-				lastExpanderEocValue[trackNumber] = 0;		
+				// expanderEocValue[trackNumber] = 0; 
+				// lastExpanderEocValue[trackNumber] = 0;		
 			}
 			
 		}
@@ -616,9 +613,9 @@ struct QuadAlgorithmicRhythm : Module {
 		}
 
 		float resetInput = inputs[RESET_INPUT].getVoltage();
-		if(!inputs[RESET_INPUT].isConnected() && masterQARPresent) {
-			resetInput = expanderResetValue;
-		}
+		// if(!inputs[RESET_INPUT].isConnected() && masterQARPresent) {
+		// 	resetInput = expanderResetValue;
+		// }
 		resetInput += params[RESET_PARAM].getValue(); //RESET BUTTON ALWAYS WORKS		
 		if(resetTrigger.process(resetInput)) {
 			for(int trackNumber=0;trackNumber<4;trackNumber++)
@@ -626,8 +623,8 @@ struct QuadAlgorithmicRhythm : Module {
 				beatIndex[trackNumber] = -1;
 				lastStepTime[trackNumber] = 0;
 				lastSwingDuration[trackNumber] = 0; // Not sure about this
-				expanderEocValue[trackNumber] = 0; 
-				lastExpanderEocValue[trackNumber] = 0;		
+				// expanderEocValue[trackNumber] = 0; 
+				// lastExpanderEocValue[trackNumber] = 0;		
 				subBeatIndex[trackNumber] = -1;
 				swingRandomness[trackNumber] = 0.0f;
 				useGaussianDistribution[trackNumber] = false;	
@@ -641,132 +638,132 @@ struct QuadAlgorithmicRhythm : Module {
 		
 
 		//Get Expander Info
-		if(rightExpander.module && (rightExpander.module->model == modelQARProbabilityExpander || rightExpander.module->model == modelQARGrooveExpander))
-		{			
-			QARExpanderDisconnectReset = true;
-			float *message = (float*) rightExpander.module->leftExpander.consumerMessage;
+		// if(rightExpander.module && (rightExpander.module->model == modelQARProbabilityExpander || rightExpander.module->model == modelQARGrooveExpander))
+		// {			
+		// 	QARExpanderDisconnectReset = true;
+		// 	float *message = (float*) rightExpander.module->leftExpander.consumerMessage;
 
-			//Process Probability Expander Stuff						
-			for(int i = 0; i < TRACK_COUNT; i++) {
-				probabilityGroupFirstStep[i] = -1;
-				for(int j = 0; j < MAX_STEPS; j++) { //reset all probabilities, find first group step
-					workingProbabilityMatrix[i][j] = 1;					
-				}
+		// 	//Process Probability Expander Stuff						
+		// 	for(int i = 0; i < TRACK_COUNT; i++) {
+		// 		probabilityGroupFirstStep[i] = -1;
+		// 		for(int j = 0; j < MAX_STEPS; j++) { //reset all probabilities, find first group step
+		// 			workingProbabilityMatrix[i][j] = 1;					
+		// 		}
 
-				if(message[i] > 0) { // 0 is track not selected
-					bool useDivs = message[i] == 2; //2 is divs
-					for(int j = 0; j < MAX_STEPS; j++) { // Assign probabilites and swing
-						int stepIndex = j;
-						bool stepFound = true;
-						if(useDivs) { //Use j as a count to the div # we are looking for
-							int divIndex = -1;
-							stepFound = false;
-							for(int k = 0; k< MAX_STEPS; k++) {
-								if (beatMatrix[i][k]) {
-									divIndex ++;
-									if(divIndex == j) {
-										stepIndex = k;
-										stepFound = true;	
-										break;								
-									}
-								}
-							}
-						}
+		// 		if(message[i] > 0) { // 0 is track not selected
+		// 			bool useDivs = message[i] == 2; //2 is divs
+		// 			for(int j = 0; j < MAX_STEPS; j++) { // Assign probabilites and swing
+		// 				int stepIndex = j;
+		// 				bool stepFound = true;
+		// 				if(useDivs) { //Use j as a count to the div # we are looking for
+		// 					int divIndex = -1;
+		// 					stepFound = false;
+		// 					for(int k = 0; k< MAX_STEPS; k++) {
+		// 						if (beatMatrix[i][k]) {
+		// 							divIndex ++;
+		// 							if(divIndex == j) {
+		// 								stepIndex = k;
+		// 								stepFound = true;	
+		// 								break;								
+		// 							}
+		// 						}
+		// 					}
+		// 				}
 						
-						if(stepFound) {
-							float probability = message[TRACK_LEVEL_PARAM_COUNT + (i * EXPANDER_MAX_STEPS) + j];
-							float probabilityMode = message[TRACK_LEVEL_PARAM_COUNT + (EXPANDER_MAX_STEPS * TRACK_COUNT) + (i * EXPANDER_MAX_STEPS) + j];
+		// 				if(stepFound) {
+		// 					float probability = message[TRACK_LEVEL_PARAM_COUNT + (i * EXPANDER_MAX_STEPS) + j];
+		// 					float probabilityMode = message[TRACK_LEVEL_PARAM_COUNT + (EXPANDER_MAX_STEPS * TRACK_COUNT) + (i * EXPANDER_MAX_STEPS) + j];
 							
-							workingProbabilityMatrix[i][stepIndex] = probability;
-							probabilityGroupModeMatrix[i][stepIndex] = probabilityMode;
-							for(int j = 0; j < MAX_STEPS; j++) { //reset all probabilities, find first group step
-								if(probabilityGroupFirstStep[i] < 0 && probabilityGroupModeMatrix[i][j] != NONE_PGTM ) {
-									probabilityGroupFirstStep[i] = j;
-									break;
-								}
-							}
-						} 
-					}
-				}
-			}
+		// 					workingProbabilityMatrix[i][stepIndex] = probability;
+		// 					probabilityGroupModeMatrix[i][stepIndex] = probabilityMode;
+		// 					for(int j = 0; j < MAX_STEPS; j++) { //reset all probabilities, find first group step
+		// 						if(probabilityGroupFirstStep[i] < 0 && probabilityGroupModeMatrix[i][j] != NONE_PGTM ) {
+		// 							probabilityGroupFirstStep[i] = j;
+		// 							break;
+		// 						}
+		// 					}
+		// 				} 
+		// 			}
+		// 		}
+		// 	}
 
-			//Process Groove Expander Stuff									
-			for(int i = 0; i < TRACK_COUNT; i++) {
-				for(int j = 0; j < MAX_STEPS; j++) { //reset all probabilities
-					workingSwingMatrix[i][j] = 0.0;
-				}
+		// 	//Process Groove Expander Stuff									
+		// 	for(int i = 0; i < TRACK_COUNT; i++) {
+		// 		for(int j = 0; j < MAX_STEPS; j++) { //reset all probabilities
+		// 			workingSwingMatrix[i][j] = 0.0;
+		// 		}
 
-				if(message[TRACK_COUNT + i] > 0) { // 0 is track not selected
-					bool useDivs = message[TRACK_COUNT + i] == 2; //2 is divs
-					trackSwingUsingDivs[i] = useDivs;
+		// 		if(message[TRACK_COUNT + i] > 0) { // 0 is track not selected
+		// 			bool useDivs = message[TRACK_COUNT + i] == 2; //2 is divs
+		// 			trackSwingUsingDivs[i] = useDivs;
 
-					int grooveLength = (int)(message[TRACK_COUNT * 2 + i]);
-					bool useTrackLength = message[TRACK_COUNT * 3 + i];
+		// 			int grooveLength = (int)(message[TRACK_COUNT * 2 + i]);
+		// 			bool useTrackLength = message[TRACK_COUNT * 3 + i];
 
-					swingRandomness[i] = message[TRACK_COUNT * 4 + i];
-					useGaussianDistribution[i] = message[TRACK_COUNT * 5 + i];
+		// 			swingRandomness[i] = message[TRACK_COUNT * 4 + i];
+		// 			useGaussianDistribution[i] = message[TRACK_COUNT * 5 + i];
 
-					if(useTrackLength) {
-						grooveLength = stepsCount[i];
-					}
-					subBeatLength[i] = grooveLength;
-					if(subBeatIndex[i] >= grooveLength) { //Reset if necessary
-						subBeatIndex[i] = 0;
-					}
+		// 			if(useTrackLength) {
+		// 				grooveLength = stepsCount[i];
+		// 			}
+		// 			subBeatLength[i] = grooveLength;
+		// 			if(subBeatIndex[i] >= grooveLength) { //Reset if necessary
+		// 				subBeatIndex[i] = 0;
+		// 			}
 					
 
-					int workingBeatIndex;
-					if(!useDivs) {
-						workingBeatIndex = (subBeatIndex[i] - beatIndex[i]) % grooveLength; 
-						if(workingBeatIndex <0) {
-							workingBeatIndex +=grooveLength;
-						}
-					} else {
-						int divCount = -1;
-						for(int k = 0; k<= beatIndex[i]; k++) {
-							if (beatMatrix[i][k]) {
-								divCount++;
-							}
-						}
+		// 			int workingBeatIndex;
+		// 			if(!useDivs) {
+		// 				workingBeatIndex = (subBeatIndex[i] - beatIndex[i]) % grooveLength; 
+		// 				if(workingBeatIndex <0) {
+		// 					workingBeatIndex +=grooveLength;
+		// 				}
+		// 			} else {
+		// 				int divCount = -1;
+		// 				for(int k = 0; k<= beatIndex[i]; k++) {
+		// 					if (beatMatrix[i][k]) {
+		// 						divCount++;
+		// 					}
+		// 				}
 
-						workingBeatIndex = (subBeatIndex[i] - divCount) % grooveLength; 
-						if(workingBeatIndex <0) {
-							workingBeatIndex +=grooveLength;
-						}
-					}
+		// 				workingBeatIndex = (subBeatIndex[i] - divCount) % grooveLength; 
+		// 				if(workingBeatIndex <0) {
+		// 					workingBeatIndex +=grooveLength;
+		// 				}
+		// 			}
 
-					for(int j = 0; j < MAX_STEPS; j++) { // Assign probabilites and swing
-						int stepIndex = j;
-						bool stepFound = true;
-						if(useDivs) { //Use j as a count to the div # we are looking for
-							int divIndex = -1;
-							stepFound = false;
-							for(int k = 0; k< MAX_STEPS; k++) {
-								if (beatMatrix[i][k]) {
-									divIndex ++;
-									if(divIndex == j) {
-										stepIndex = k;
-										stepFound = true;	
-										break;								
-									}
-								}
-							}
-						}
+		// 			for(int j = 0; j < MAX_STEPS; j++) { // Assign probabilites and swing
+		// 				int stepIndex = j;
+		// 				bool stepFound = true;
+		// 				if(useDivs) { //Use j as a count to the div # we are looking for
+		// 					int divIndex = -1;
+		// 					stepFound = false;
+		// 					for(int k = 0; k< MAX_STEPS; k++) {
+		// 						if (beatMatrix[i][k]) {
+		// 							divIndex ++;
+		// 							if(divIndex == j) {
+		// 								stepIndex = k;
+		// 								stepFound = true;	
+		// 								break;								
+		// 							}
+		// 						}
+		// 					}
+		// 				}
 						
-						if(stepFound) {
-							float swing = message[TRACK_LEVEL_PARAM_COUNT + (EXPANDER_MAX_STEPS * TRACK_COUNT * 2) + (i * EXPANDER_MAX_STEPS) + workingBeatIndex];
-							workingSwingMatrix[i][stepIndex] = swing;						
-						} 
-						workingBeatIndex +=1;
-						if(workingBeatIndex >= grooveLength) {
-							workingBeatIndex = 0;
-						}
-					}
-				}
-			}
+		// 				if(stepFound) {
+		// 					float swing = message[TRACK_LEVEL_PARAM_COUNT + (EXPANDER_MAX_STEPS * TRACK_COUNT * 2) + (i * EXPANDER_MAX_STEPS) + workingBeatIndex];
+		// 					workingSwingMatrix[i][stepIndex] = swing;						
+		// 				} 
+		// 				workingBeatIndex +=1;
+		// 				if(workingBeatIndex >= grooveLength) {
+		// 					workingBeatIndex = 0;
+		// 				}
+		// 			}
+		// 		}
+		// 	}
 			
 			
-		} else {
+		// } else {
 			if(QARExpanderDisconnectReset) { //If QRE gets disconnected, reset probability and swing
 				for(int i = 0; i < TRACK_COUNT; i++) {
 					subBeatIndex[i] = 0;
@@ -777,7 +774,7 @@ struct QuadAlgorithmicRhythm : Module {
 				}
 				QARExpanderDisconnectReset = false;
 			}
-		}
+		// }
 
 
 		//set calculated probability and swing
@@ -791,9 +788,9 @@ struct QuadAlgorithmicRhythm : Module {
 
 		
 		float muteInput = inputs[MUTE_INPUT].getVoltage();
-		if(!inputs[MUTE_INPUT].isConnected() && masterQARPresent) {
-			muteInput = expanderMuteValue;
-		}
+		// if(!inputs[MUTE_INPUT].isConnected() && masterQARPresent) {
+		// 	muteInput = expanderMuteValue;
+		// }
 		muteInput += params[MUTE_PARAM].getValue(); //MUTE BUTTON ALWAYS WORKS		
 		if(muteTrigger.process(muteInput)) {
 			muted = !muted;
@@ -806,13 +803,13 @@ struct QuadAlgorithmicRhythm : Module {
 			float startInput = 0;
 			if(inputs[START_1_INPUT + (trackNumber * 8)].isConnected()) {
 				startInput = inputs[START_1_INPUT + (trackNumber * 8)].getVoltage();
-			} else if(masterQARPresent) {
-				startInput = expanderEocValue[trackNumber];
-			} else if(rightExpanderPresent) {
-				startInput = lastExpanderEocValue[trackNumber];
-			}
+			} //else if(masterQARPresent) {
+			// 	startInput = expanderEocValue[trackNumber];
+			// } else if(rightExpanderPresent) {
+			// 	startInput = lastExpanderEocValue[trackNumber];
+			// }
 			
-			if(chainMode != CHAIN_MODE_NONE && (inputs[(trackNumber * 8) + START_1_INPUT].isConnected() || masterQARPresent || slavedQARPresent) && !running[trackNumber]) {
+			if(chainMode != CHAIN_MODE_NONE && (inputs[(trackNumber * 8) + START_1_INPUT].isConnected()/* || masterQARPresent || slavedQARPresent*/) && !running[trackNumber]) {
 				if(startTrigger[trackNumber].process(startInput)) {
 					running[trackNumber] = true;
 					beatIndex[trackNumber] = -1;
@@ -826,13 +823,13 @@ struct QuadAlgorithmicRhythm : Module {
 		timeElapsed += timeAdvance;
 
 		float clockInput = inputs[CLOCK_INPUT].getVoltage();
-		if(!inputs[CLOCK_INPUT].isConnected() && masterQARPresent) {
-			clockInput = expanderClockValue;
-		}
+		// if(!inputs[CLOCK_INPUT].isConnected() && masterQARPresent) {
+		// 	clockInput = expanderClockValue;
+		// }
 
 	
 
-		if(inputs[CLOCK_INPUT].isConnected() || masterQARPresent) {
+		if(inputs[CLOCK_INPUT].isConnected()/* || masterQARPresent*/) {
 			if(clockTrigger.process(clockInput)) {
 				if(firstClockReceived) {
 					duration = timeElapsed;
@@ -873,14 +870,14 @@ struct QuadAlgorithmicRhythm : Module {
 		for(int trackNumber=0;trackNumber<TRACK_COUNT;trackNumber++) {
             //Send Out Beat
 			float beatOutputValue = beatPulse[trackNumber].process(1.0 / args.sampleRate) ? 10.0 : 0;
-			if(slavedQARPresent)
-				beatOutputValue =  clamp(beatOutputValue + expanderOutputValue[trackNumber],0.0f,10.0f);
+			// if(slavedQARPresent)
+			// 	beatOutputValue =  clamp(beatOutputValue + expanderOutputValue[trackNumber],0.0f,10.0f);
             outputs[(trackNumber * 3) + OUTPUT_1].setVoltage(beatOutputValue);	
 
             //Send out Accent
 			float accentOutputValue = accentPulse[trackNumber].process(1.0 / args.sampleRate) ? 10.0 : 0;
-			if(slavedQARPresent)
-				accentOutputValue = clamp(accentOutputValue + expanderAccentValue[trackNumber] ,0.0f,10.0f);
+			// if(slavedQARPresent)
+			// 	accentOutputValue = clamp(accentOutputValue + expanderAccentValue[trackNumber] ,0.0f,10.0f);
             outputs[(trackNumber * 3) + ACCENT_OUTPUT_1].setVoltage(accentOutputValue);	
 
 			//Send out End of Cycle
@@ -888,31 +885,31 @@ struct QuadAlgorithmicRhythm : Module {
 			outputs[(trackNumber * 3) + EOC_OUTPUT_1].setVoltage(eocOutputValue);				
 			
 			
-			if(leftExpanderPresent) {
-				producerMessage[PASSTHROUGH_OFFSET + 1 + trackNumber * 3] = beatOutputValue; 
-				producerMessage[PASSTHROUGH_OFFSET + 1 + trackNumber * 3 + 1] = accentOutputValue;
-				producerMessage[PASSTHROUGH_OFFSET + 1 + trackNumber * 3 + 2] = rightExpanderPresent ? lastExpanderEocValue[trackNumber] : eocOutputValue; // If last QAR send Eoc Back, otherwise pass through
-			} 
-			if(rightExpanderPresent) {
-				float *messageToSlave = (float*)(rightExpander.module->leftExpander.producerMessage);	
-				messageToSlave[PASSTHROUGH_OFFSET + PASSTHROUGH_LEFT_VARIABLE_COUNT + 4 + trackNumber] = eocOutputValue; 				
-			}
+			// if(leftExpanderPresent) {
+			// 	producerMessage[PASSTHROUGH_OFFSET + 1 + trackNumber * 3] = beatOutputValue; 
+			// 	producerMessage[PASSTHROUGH_OFFSET + 1 + trackNumber * 3 + 1] = accentOutputValue;
+			// 	producerMessage[PASSTHROUGH_OFFSET + 1 + trackNumber * 3 + 2] = rightExpanderPresent ? lastExpanderEocValue[trackNumber] : eocOutputValue; // If last QAR send Eoc Back, otherwise pass through
+			// } 
+			// if(rightExpanderPresent) {
+			// 	float *messageToSlave = (float*)(rightExpander.module->leftExpander.producerMessage);	
+			// 	messageToSlave[PASSTHROUGH_OFFSET + PASSTHROUGH_LEFT_VARIABLE_COUNT + 4 + trackNumber] = eocOutputValue; 				
+			// }
 
 		}
 
-		//Send outputs to slaves if present		
-		if(rightExpanderPresent) {
-			float *messageToSlave = (float*)(rightExpander.module->leftExpander.producerMessage);
-			messageToSlave[PASSTHROUGH_OFFSET + PASSTHROUGH_LEFT_VARIABLE_COUNT] = true; // tell slave Master is present
-			messageToSlave[PASSTHROUGH_OFFSET + PASSTHROUGH_LEFT_VARIABLE_COUNT + 1] = clockInput; 
-			messageToSlave[PASSTHROUGH_OFFSET + PASSTHROUGH_LEFT_VARIABLE_COUNT + 2] = resetInput; 
-			messageToSlave[PASSTHROUGH_OFFSET + PASSTHROUGH_LEFT_VARIABLE_COUNT + 3] = muteInput; 				
-		}
+		// //Send outputs to slaves if present		
+		// if(rightExpanderPresent) {
+		// 	float *messageToSlave = (float*)(rightExpander.module->leftExpander.producerMessage);
+		// 	messageToSlave[PASSTHROUGH_OFFSET + PASSTHROUGH_LEFT_VARIABLE_COUNT] = true; // tell slave Master is present
+		// 	messageToSlave[PASSTHROUGH_OFFSET + PASSTHROUGH_LEFT_VARIABLE_COUNT + 1] = clockInput; 
+		// 	messageToSlave[PASSTHROUGH_OFFSET + PASSTHROUGH_LEFT_VARIABLE_COUNT + 2] = resetInput; 
+		// 	messageToSlave[PASSTHROUGH_OFFSET + PASSTHROUGH_LEFT_VARIABLE_COUNT + 3] = muteInput; 				
+		// }
 		
-		if(leftExpanderPresent) {
-			producerMessage[PASSTHROUGH_OFFSET] = true; //Tell Master that slave is present
-			leftExpander.messageFlipRequested = true;	
-		} 			
+		// if(leftExpanderPresent) {
+		// 	producerMessage[PASSTHROUGH_OFFSET] = true; //Tell Master that slave is present
+		// 	leftExpander.messageFlipRequested = true;	
+		// } 			
 	}
 
 
@@ -982,7 +979,7 @@ struct QuadAlgorithmicRhythm : Module {
 		//End of Cycle
 		if(beatIndex[trackNumber] >= stepsCount[trackNumber]) {
 			beatIndex[trackNumber] = 0;
-			eocPulse[trackNumber].trigger(1e-3);
+			eocPulse[trackNumber].trigger();
 			probabilityGroupTriggered[trackNumber] = PENDING_PGTS;
 			if(chainMode != CHAIN_MODE_NONE) {
 				running[trackNumber] = false;
@@ -1013,12 +1010,12 @@ struct QuadAlgorithmicRhythm : Module {
 
         //Create Beat Trigger    
         if(beatMatrix[trackNumber][beatIndex[trackNumber]] == true && probabilityResult && running[trackNumber] && !muted) {
-            beatPulse[trackNumber].trigger(1e-3);		
+            beatPulse[trackNumber].trigger();		
         } 
 
         //Create Accent Trigger
         if(accentMatrix[trackNumber][beatIndex[trackNumber]] == true && probabilityResult && running[trackNumber] && !muted) {
-            accentPulse[trackNumber].trigger(1e-3);
+            accentPulse[trackNumber].trigger();
         }
 
 		if(useGaussianDistribution[trackNumber]) {
@@ -1045,10 +1042,10 @@ struct QuadAlgorithmicRhythm : Module {
 			lastStepTime[i] = 0.0;
 			stepDuration[i] = 0.0;
             lastSwingDuration[i] = 0.0;
-			expanderAccentValue[i] = 0.0;
-			expanderOutputValue[i] = 0.0;
-			expanderEocValue[i] = 0; 
-			lastExpanderEocValue[i] = 0;
+			// expanderAccentValue[i] = 0.0;
+			// expanderOutputValue[i] = 0.0;
+			// expanderEocValue[i] = 0; 
+			// lastExpanderEocValue[i] = 0;
 			probabilityGroupTriggered[i] = PENDING_PGTS;
 			swingRandomness[i] = 0.0f;
 			useGaussianDistribution[i] = false;	
@@ -1113,26 +1110,27 @@ struct QARBeatDisplay : TransparentWidget {
 		nvgStrokeWidth(args.vg, 1.0);
 		nvgRect(args.vg,boxX,boxY,21,21.0);		
 		nvgStroke(args.vg);
+		//TODO: change all this back once expanderts are supported
 		if(isBeat) {
 			nvgBeginPath(args.vg);
 			nvgStrokeWidth(args.vg, 0.0);
-            nvgRect(args.vg,boxX + 10.5,boxY+(21*(1-probability)),10.5+(21*std::min(swing,0.0f)),21*probability);
-            nvgRect(args.vg,boxX + (21*std::max(swing,0.0f)),boxY+(21*(1-probability)),10.5-(21*std::max(swing,0.0f)),21*probability);
+            // nvgRect(args.vg,boxX + 10.5,boxY+(21*(1-probability)),10.5+(21*std::min(swing,0.0f)),21*probability);
+            // nvgRect(args.vg,boxX + (21*std::max(swing,0.0f)),boxY+(21*(1-probability)),10.5-(21*std::max(swing,0.0f)),21*probability);
+            nvgRect(args.vg,boxX,boxY,21,21);
             nvgFillColor(args.vg, fillColor);
 			nvgFill(args.vg);
 			nvgStroke(args.vg);
 
-			//Draw swing randomness
-			if(swingRandomness > 0.0f) {
-				nvgBeginPath(args.vg);
-				nvgStrokeWidth(args.vg, 0.0);
-				nvgRect(args.vg,boxX + 10.5f,boxY+(21*(1-probability)),(5.5*swingRandomness),21*probability);
-				nvgRect(args.vg,boxX + 10.5f-(5.5*swingRandomness),boxY+(21*(1-probability)),(5.5*swingRandomness),21*probability);
-				nvgFillColor(args.vg, randomFillColor);
-				nvgFill(args.vg);
-				nvgStroke(args.vg);
-			}
-
+			// //Draw swing randomness
+			// if(swingRandomness > 0.0f) {
+			// 	nvgBeginPath(args.vg);
+			// 	nvgStrokeWidth(args.vg, 0.0);
+			// 	nvgRect(args.vg,boxX + 10.5f,boxY+(21*(1-probability)),(5.5*swingRandomness),21*probability);
+			// 	nvgRect(args.vg,boxX + 10.5f-(5.5*swingRandomness),boxY+(21*(1-probability)),(5.5*swingRandomness),21*probability);
+			// 	nvgFillColor(args.vg, randomFillColor);
+			// 	nvgFill(args.vg);
+			// 	nvgStroke(args.vg);
+			// }
 		}
 
 		if (triggerState == module->NOT_TRIGGERED_PGTS && probabilityGroupMode != module->NONE_PGTM) {

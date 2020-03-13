@@ -36,3 +36,9 @@ extern Model *modelVoxInhumana;
 extern Model *modelVoxInhumanaExpander;
 extern Model *modelCDCSeriouslySlowLFO;
 
+namespace old {
+extern Model *modelLissajousLFO_old;
+extern Model *modelRouletteLFO_old;
+extern Model *modelQuadGolombRulerRhythm_old;
+extern Model *modelQuadEuclideanRhythm_old;
+}

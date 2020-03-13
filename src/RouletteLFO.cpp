@@ -353,4 +353,4 @@ struct RouletteLFOWidget : ModuleWidget {
 	}
 };
 
-Model *modelRouletteLFO = createModel<RouletteLFO, RouletteLFOWidget>("RouletteLFO");
+Model *modelRouletteLFO = createModel<RouletteLFO, RouletteLFOWidget>("RouletteLFO2");
